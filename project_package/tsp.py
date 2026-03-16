@@ -29,10 +29,29 @@ def dfs_2_mst(graph_mst, s):
     
     two_mst_dfs=[]
     
-    ###########complete the code################
-    
- 
-    
+
+    while stack:
+        node = stack[-1]
+
+        if visited[node] == 0:
+            two_mst_dfs.append(node)
+            visited[node] = 1
+
+        # find next unvisited neighbor (iterate in reverse dict order so that
+        # the first inserted neighbor is explored last, matching stack LIFO behavior)
+        next_node = None
+        for neighbor in reversed(list(graph_mst[node].keys())):
+            if visited[neighbor] == 0:
+                next_node = neighbor
+                break
+
+        if next_node is not None:
+            stack.append(next_node)
+        else:
+            stack.pop()
+            if stack: # record the backtrack
+                two_mst_dfs.append(stack[-1])
+
     return two_mst_dfs
 
         
