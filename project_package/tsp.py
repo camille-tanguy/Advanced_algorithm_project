@@ -79,10 +79,15 @@ def test_dfs_2_mst():
 ###########cycle construction################
 def cycle_construct(list_two_mst):
     tsp_cycle=[]
-    
+
     ###########complete the code################
-    
-    
+    seen = set()
+    for node in list_two_mst:
+        if node not in seen:
+            tsp_cycle.append(node)
+            seen.add(node)
+    tsp_cycle.append(tsp_cycle[0])  # close the cycle back to start
+
     return tsp_cycle
 
 ###########test code################
@@ -101,11 +106,11 @@ def total_distance(graph, cycle_list):
     neighboring vertices in cycle_list'''
     
     td=0
-    
-    ###########complete the code################
-    
 
-        
+    ###########complete the code################
+    for i in range(len(cycle_list) - 1):
+        td += graph[cycle_list[i]][cycle_list[i+1]]
+
     return td
 
 ##################### Major algorithm ################
@@ -122,7 +127,24 @@ def tsp_algo(numVertices, weightRange):
     '''
     
     ###########complete the code################
-    
- 
+    # 1. Create a random complete undirected graph
+    graph = Graph(numVertices=numVertices, weightRange=weightRange, directed=False)
+
+    # 2. Compute the MST using Prim's algorithm
+    mst = MST_Prim(graph)
+
+    # 3. Convert MST (Graph object) to adjacency list dict
+    mst_adl = transform_graph2adl(mst)
+
+    # 4. DFS traversal that traverses each MST edge twice
+    two_mst = dfs_2_mst(mst_adl, 0)
+
+    # 5. Build the Hamiltonian cycle (keep first occurrences, close cycle)
+    cycle = cycle_construct(two_mst)
+
+    # 6. Compute total distance using the original complete graph's weights
+    graph_adl = transform_graph2adl(graph)
+    return total_distance(graph_adl, cycle)
+
+
 #print(tsp_algo(6, 30))
- 
