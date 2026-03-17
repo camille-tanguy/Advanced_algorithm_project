@@ -74,7 +74,7 @@ def test_dfs_2_mst():
     res=[0, 4, 5, 4, 1, 3, 1, 4, 0, 2, 0]
     assert dfs_2_mst(graph, 0)==res
     
-#test_dfs_2_mst()
+test_dfs_2_mst()
 
 ###########cycle construction################
 def cycle_construct(list_two_mst):
@@ -96,7 +96,7 @@ def test_cycle_construct():
     res=[0, 4, 5, 1, 3, 2, 0]
     assert cycle_construct(ex)==res
 
-#test_cycle_construct()
+test_cycle_construct()
 
 #####################total distance################
 
@@ -147,4 +147,4 @@ def tsp_algo(numVertices, weightRange):
     return total_distance(graph_adl, cycle)
 
 
-#print(tsp_algo(6, 30))
+print(tsp_algo(6, 30))
