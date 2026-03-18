@@ -1,5 +1,6 @@
 from graph import Graph
 from min_span_tree import *
+import random
 
 ###########graph representation######################
 
@@ -147,4 +148,49 @@ def tsp_algo(numVertices, weightRange):
     return total_distance(graph_adl, cycle)
 
 
-print(tsp_algo(6, 30))
+def tsp_algo_with_trace(numVertices, weightRange, seed=None):
+    """
+    Same as tsp_algo but returns (graph, mst, two_mst, cycle, total_dist)
+    for report. Set seed for reproducibility.
+    """
+    import random
+    if seed is not None:
+        random.seed(seed)
+
+    graph = Graph(numVertices=numVertices, weightRange=weightRange, directed=False)
+    mst = MST_Prim(graph)
+    mst_adl = transform_graph2adl(mst)
+    two_mst = dfs_2_mst(mst_adl, 0)
+    cycle = cycle_construct(two_mst)
+    graph_adl = transform_graph2adl(graph)
+    total_dist = total_distance(graph_adl, cycle)
+
+    return graph, mst, two_mst, cycle, total_dist
+
+
+def run_example():
+    """Run example with 6 vertices for report (reproducible with seed)."""
+    random.seed(42)
+
+    graph, mst, two_mst, cycle, total_dist = tsp_algo_with_trace(6, 30, seed=42)
+
+    print("TSP Algo Example (6 vertices, weightRange=30, seed=42) ===\n")
+
+    print("1. Graph object (adjacency + weights):")
+    print(graph)
+
+    print("\n2. MST (minimum spanning tree):")
+    print(mst)
+
+    print("\n3. Two times of MST with DFS (list):")
+    print("   ", two_mst)
+
+    print("\n4. Corresponding cycle (first-occurrence + close):")
+    print("   ", cycle)
+
+    print("\n5. Final result (total distance):")
+    print("   ", total_dist)
+
+
+if __name__ == "__main__":
+    run_example()
